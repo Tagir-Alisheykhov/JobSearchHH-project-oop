@@ -17,8 +17,8 @@ vacancies_list = Vacancy.cast_to_object_list(hh_vacancies)
 
 
 # # # Пример работы конструктора класса с одной вакансией
-vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>",
-                  "100 000-150 000 руб.", "Требования: опыт работы от 3 лет...")
+# vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>",
+#                   "100 000-200 000 руб.", "Требования: опыт работы от 3 лет...")
 
 # print(vacancy.name)
 # print(vacancy.url)
@@ -27,8 +27,8 @@ vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>",
 
 # # Для теста
 # vacancy_del = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>", "100 000-150 000 руб.", "Требования: опыт работы от 3 лет...")
-# print(vacancy < vacancy_del)
-# # print(res)
+# print(vacancy >= vacancy_del)
+# print(res)
 
 # print(JSONSaver.save_in_json())
 
