@@ -38,17 +38,21 @@ def one_salary_2():
 
 @pytest.fixture
 def list_dict_vacancy():
+    """
+    Возвращает словари с недопустимыми значениями
+    :return: list[dict(), dict()]
+    """
     vacancy1 = ({
         'name': "Python Developer",
         'url': "<https://hh.ru/vacancy/123456>",
-        'salary': 10000,
+        'salary': None,
         'requirement': "Требования: опыт работы от 98 лет...",
         'responsibility': None
     },
                 {
         'name': "Python Developer",
         'url': "<https://hh.ru/vacancy/123456>",
-        'salary': 10000,
+        'salary': None,
         'requirement': "Требования: опыт работы от 98 лет...",
         'responsibility': None
     })

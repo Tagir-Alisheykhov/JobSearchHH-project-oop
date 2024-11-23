@@ -1,8 +1,13 @@
+import json
+
 import pytest
 
+from os import path
 from unittest.mock import patch
 
 from src.connect_to_hh_api import HeadHunterAPI, ValidateVacancy, JSONSaver
+
+path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
 
 
 @patch('requests.get')
@@ -79,9 +84,10 @@ def test_class_vacancy(one_salary_1: dict, one_salary_2: dict) -> None:
     assert comparison_6 is True
 
 
-def test_jsonfile_validate(list_dict_vacancy):
+def test_json_creating_dictionary_vacancy():
     """
-    Тестирование метода валидации файла с вакансией/-ями
+    Тестирование метода валидации json-файла `file_validate`
+    класса `JSONSaver`.
 
     """
     json_saver = JSONSaver()
@@ -89,6 +95,34 @@ def test_jsonfile_validate(list_dict_vacancy):
         assert json_saver.creating_dictionary_vacancy(list('<<<virus>>>'))
 
 
-def
+def test_call_json_file_by_parameters():
+    """
+    Тестирование метода вызова json-файла `call_json_file_by_parameters`
+    класса `JSONSaver`.
+
+    """
+    json_saver = JSONSaver()
+    assert json_saver.call_json_file_by_parameters("Abrakadabra") == f'{list()}'
+    assert json_saver.call_json_file_by_parameters(" ")
 
 
+def test_add_vacancy(one_salary_1):
+    """
+    Тестирование метода добавления json-файла `add_vacancy`
+    класса `JSONSaver`.
+
+    """
+    json_saver = JSONSaver()
+    with pytest.raises(AssertionError):
+        assert json_saver.add_vacancy(one_salary_1)
+
+
+def test_delete_vacancy(one_salary_1):
+    """
+    Тестирование метода удаления json-файла `add_vacancy`
+    класса `JSONSaver`.
+
+    """
+    json_saver = JSONSaver()
+    with pytest.raises(AssertionError):
+        assert json_saver.delete_vacancy(one_salary_1)

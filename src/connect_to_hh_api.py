@@ -247,12 +247,12 @@ class JSONSaver(FileSaver):
     filename: str
     filtered_data = list()
 
-    def __init__(self, filename="vacancies_info.json"):
+    def __init__(self, filename='vacancies_info'):
         """
-        Инициализация атрибутов
+        Инициализация атрибутов.
 
         """
-        self.path_to_file = path_to_data + filename
+        self.path_to_file = path_to_data + filename + '.json'
 
     def file_validate(self, new_data: list | dict) -> None:
         """
@@ -313,12 +313,11 @@ class JSONSaver(FileSaver):
         flattened_data = list(chain.from_iterable(information_vacancies))
         self.creating_dictionary_vacancy(flattened_data)
 
-    def call_json_file_by_parameters(
-            self,
-            keyword: str = False,
-            salary_from: int = False,
-            salary_to: int = False
-    ) -> str:
+    def call_json_file_by_parameters(self,
+                                     keyword: str = False,
+                                     salary_from: int = False,
+                                     salary_to: int = False
+                                     ) -> str:
         """
         Получение данных из JSON-файла по указанным критериям.
         Имеет необязательные критерии, такие как:
@@ -329,40 +328,29 @@ class JSONSaver(FileSaver):
         Можно указать только один параметр или сразу оба.
 
         """
-
         with open(self.path_to_file, "r", encoding="utf-8") as js_file:
             data = json.load(js_file)
-
         for vacancy in data:
             key_true_vacancies = None
-            if not vacancy['salary']:
-                raise KeyError('Отсутствует ключ для валидации/KEY="salary"')
-
             # Фильтрация вакансий по ключевому слову
             for value in vacancy.values():
                 if isinstance(value, str) and keyword in value:
                     key_true_vacancies = vacancy
-
             # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
             if key_true_vacancies:
                 if salary_from and salary_to and salary_from < salary_to:
                     if salary_from <= key_true_vacancies['salary'] <= salary_to:
                         self.filtered_data.append(vacancy)
-
                 elif not salary_from and not salary_to:
                     self.filtered_data.append(vacancy)
-
                 elif (salary_from and not salary_to and
                       key_true_vacancies["salary"] >= salary_from):
                     self.filtered_data.append(vacancy)
-
                 elif (salary_to and not salary_from and
                       key_true_vacancies["salary"] <= salary_to):
                     self.filtered_data.append(vacancy)
-
                 elif salary_from > salary_to:
                     raise ValueError("'salary_from' не может быть больше 'salary_to'")
-
         return json.dumps(self.filtered_data, indent=4, ensure_ascii=False)
 
     def add_vacancy(self, *vacancy: Vacancy) -> None:
