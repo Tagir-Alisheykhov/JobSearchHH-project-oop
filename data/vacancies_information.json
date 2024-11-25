@@ -1,0 +1,142 @@
+[
+    {
+        "name": "Backend Python developer",
+        "url": "https://hh.ru/vacancy/111608814",
+        "salary": 0,
+        "requirement": "ОС Linux. <highlighttext>Python</highlighttext> 3.10. FastApi. SQLAlchemy. PostgreSQL. Alembic. GIT. Docker. Socket.IO. WxPython. Опыт разработки от 2х лет. ",
+        "responsibility": "Разработка нового функционала и/или доработка существующего в рамках требований ТЗ. Интеграция с внешними сервисами, в рамках требований ТЗ. "
+    },
+    {
+        "name": "Python-разработчик",
+        "url": "https://hh.ru/vacancy/111535718",
+        "salary": 0,
+        "requirement": "Строго обязателен подтвержденный коммерческий опыт работы в качестве <highlighttext>Python</highlighttext>-разработчика от 1 года (трудовой договор, гражданско-правовой договор). ",
+        "responsibility": "Разработка бэка для веб-приложений и мобильных приложений в проекте, включающем геоинформационную систему, корпоративный портал, систему аналитики. Поддержка работоспособности, доработка..."
+    },
+    {
+        "name": "Младший Python-разработчик в команду DCIM",
+        "url": "https://hh.ru/vacancy/111612662",
+        "salary": 0,
+        "requirement": "Хорошее знание языка <highlighttext>Python</highlighttext>. Знание основных шаблонов проектирования и особенностей их реализации. Уверенная работа с Git. Опыт работы с PostgreSQL...",
+        "responsibility": "Отдел систем управления инфраструктурой ДЦ (DCIM) - это направление, которое занимается разработкой информационных систем для учета и визуализации инфраструктуры и активов..."
+    },
+    {
+        "name": "Python разработчик (Junior)",
+        "url": "https://hh.ru/vacancy/111581129",
+        "salary": 0,
+        "requirement": "Имеете опыт работы с другими языками программирования, помимо <highlighttext>Python</highlighttext>, такими как PHP, JavaScript, Java, C++ и т.д. ",
+        "responsibility": "Разработка ботов для автоматизации рутинных задач с помощью библиотеки Selenium (или её аналогов). Создание и поддержка веб-приложения с использованием..."
+    },
+    {
+        "name": "Backend разработчик",
+        "url": "https://hh.ru/vacancy/111313345",
+        "salary": 90000,
+        "requirement": "Знание SQL. Опыт проектирования БД от 1 года. Опыт работы с какой либо СУБД (желательно PostgreSQL). Навыки алгоритмизации. ",
+        "responsibility": "Анализ задач и проектирование под них БД. Разработка бизнес логики под требования компании (имеется собственная платформа). Внедрение и поддержка новых..."
+    },
+    {
+        "name": "Программист Python(Django)",
+        "url": "https://hh.ru/vacancy/111403400",
+        "salary": 150000,
+        "requirement": "Уверенное владение <highlighttext>Python</highlighttext> 3.8+, Django 2.2+. Желателен опыт с celery, django-rest-framework. Знание базовых паттернов...",
+        "responsibility": "Работа над заказными веб-проектами из различных областей бизнеса."
+    },
+    {
+        "name": "QA-инженер / Тестировщик программного обеспечения",
+        "url": "https://hh.ru/vacancy/111492971",
+        "salary": 80000,
+        "requirement": "Базовые знания английского приветствуются. Прохождение специализированных курсов. Базовое представление об SQL. Знание скриптовых языков типа <highlighttext>Python</highlighttext>. Желание развиваться в области...",
+        "responsibility": "Тестирование ПО и интеграций с оборудованием. Разработка тест-кейсов, чек-листов. Анализ логов. Моделирование ошибок пользователей, исследование причин сбоев."
+    },
+    {
+        "name": "Backend-разработчик",
+        "url": "https://hh.ru/vacancy/111513705",
+        "salary": 200000,
+        "requirement": "3+ года опыта работы в backend-разработке на Python.Умение писать чистый, понятный и документированный код. Знание фреймворков: Django, Flask...",
+        "responsibility": "Разработка и поддержка backend-части платформы: Создание API для работы фронтенда и аналитических сервисов. Интеграция с системами маркетплейсов и рекламными..."
+    },
+    {
+        "name": "Data Analyst",
+        "url": "https://hh.ru/vacancy/111327833",
+        "salary": 0,
+        "requirement": "Продвинутые навыки в использовании инструментов визуализации данных (например, Tableau, Power BI). Опыт программирования <highlighttext>Python</highlighttext> для анализа данных. Опыт создания и...",
+        "responsibility": "Разрабатывать и реализовывать стратегий анализа данных для оптимизации работы с клиентской базой. Анализировать сложные данные, интерпретировать результаты и предоставлять стратегические..."
+    },
+    {
+        "name": "Java Developer",
+        "url": "https://hh.ru/vacancy/111435177",
+        "salary": 180000,
+        "requirement": "Будет плюсом: Знание других языков программирования: C# (в приоритете), <highlighttext>Python</highlighttext>, C++. Опыт написания скриптов: batch, shell, vbs, powershell. ",
+        "responsibility": "Java 6: доработки в коробку Flextera от Diasoft. Java 8: доработки в коробку Flextera от Diasoft. Java 11: доработки в..."
+    },
+    {
+        "name": "QA Manual (гибрид)",
+        "url": "https://hh.ru/vacancy/111426994",
+        "salary": 170000,
+        "requirement": "Знание брокеров очередей, баз данных. Работа с логами. Опыт в автоматизации, пройденные курсы , знание <highlighttext>Python</highlighttext>. Опыт работы с Allure TestOps. ",
+        "responsibility": "Ведение тестовой документации: баг-репорты, тест-кейсы, чек-листы и отчеты о тестировании. Применение подходящей техники тест-дизайна при проектировании..."
+    },
+    {
+        "name": "Аналитик данных",
+        "url": "https://hh.ru/vacancy/111530211",
+        "salary": 150000,
+        "requirement": "Знание Excel для целей построения отчетов и расчетных моделей (вкл. использование PowerQuery). - Базовые навыки использования <highlighttext>Python</highlighttext> для анализа данных приветствуются.",
+        "responsibility": "Построение аналитической отчетности в среде Qlik Sense (подключение к источникам данных, разработка логики расчетов и визуализация конечных данных). - "
+    },
+    {
+        "name": "Тестировщик ПО",
+        "url": "https://hh.ru/vacancy/109064484",
+        "salary": 120000,
+        "requirement": "Будет Вашим преимуществом: Навыки написания скриптов на <highlighttext>Python</highlighttext> для автоматизации тестирования и работы с тестовыми данными. Опыт работы с системой...",
+        "responsibility": "Организация процесса тестирования. Описание и выполнение тест-кейсов. Проведение ручного и автоматизированного тестирования веб-приложений."
+    },
+    {
+        "name": "Python-разработчик",
+        "url": "https://hh.ru/vacancy/111353360",
+        "salary": 0,
+        "requirement": "Коммерческий опыт работы с <highlighttext>Python</highlighttext> от 2 лет. Знание <highlighttext>Python</highlighttext> Core и стандартной библиотеки. Опыт работы с фреймворками (Django / FastAPI...",
+        "responsibility": null
+    },
+    {
+        "name": "Junior Python Developer",
+        "url": "https://hh.ru/vacancy/110711272",
+        "salary": 0,
+        "requirement": "Basic knowledge of <highlighttext>Python</highlighttext> or 1 year in a role focused on <highlighttext>Python</highlighttext> backend development (perfectly with Django framework). ",
+        "responsibility": "Build and maintain back-end for Improvado's marketing analytics SaaS platform (including architectural improvements regarding scalability, reliability and performance). "
+    },
+    {
+        "name": "Тестировщик программного продукта (Middle)",
+        "url": "https://hh.ru/vacancy/111611999",
+        "salary": 0,
+        "requirement": "Знание языков программирования, на которых ведется разработка продукта (JavaScript, <highlighttext>Python</highlighttext>, С++, Go). Опыт работы со средствами автоматического тестирования. ",
+        "responsibility": "Проведение тестирования различных видов:интеграционное тестирование, тестирование Ul и UX, кросс-браузерное тестирование web-приложений(frontend/ backend (postgreSQL)),web-сервиса..."
+    },
+    {
+        "name": "ML аналитик в биг-тех 0ПГ",
+        "url": "https://hh.ru/vacancy/111447215",
+        "salary": 120000,
+        "requirement": "Отличное владение <highlighttext>Python</highlighttext>, SQL, ML-фреймворками (например, TensorFlow, PyTorch, scikit-learn) и инструментами для работы с данными (например, Pandas, NumPy). ",
+        "responsibility": "Анализировать массивы данных из переписок Whatsapp на предмет поиск грызуна в коллективе. Запуск симуляций на тему \"лучший способ войти в..."
+    },
+    {
+        "name": "Backend-разработчик",
+        "url": "https://hh.ru/vacancy/111307834",
+        "salary": 200000,
+        "requirement": "Уверенные знания : <highlighttext>Python</highlighttext> (FastAPI). - Опыт работы с PostgreSQL. - Знание принципов построения микросервисной архитектуры. - Опыт работы с Docker, понимание CI/CD. - ",
+        "responsibility": "Разработка и поддержка новых функциональных модулей системы. Интеграция с внешними API сторонних систем. Оптимизация работы микросервисов и базы данных. "
+    },
+    {
+        "name": "Разработчик бэк-офиса на Python",
+        "url": "https://hh.ru/vacancy/111560656",
+        "salary": 100000,
+        "requirement": "Понимание основ DevOps (настройка CI/CD, автоматизация развертывания). - Знание <highlighttext>Python</highlighttext>-библиотек для работы с данными (pandas, numpy и др.). - ",
+        "responsibility": "Мы ищем опытного <highlighttext>Python</highlighttext>-разработчика для создания системы внутренней отчетности с интеграцией API, работы с базой данных SQL и визуализации..."
+    },
+    {
+        "name": "Junior Data Scientist",
+        "url": "https://hh.ru/vacancy/111570608",
+        "salary": 0,
+        "requirement": "статистическими пакетами (SPSS, STATISTICA и т.п.). Опыт применения R и <highlighttext>Python</highlighttext> для углубленной аналитики и машинного обучения. ",
+        "responsibility": "Исследование данных из различных корпоративных источников для извлечения ценной для бизнеса информации. Формирование требований к источникам данных, необходимых для реализации..."
+    }
+]

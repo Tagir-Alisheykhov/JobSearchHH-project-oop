@@ -9,16 +9,14 @@ hh_api = HeadHunterAPI()
 
 # # Получение вакансий с hh.ru в формате JSON
 hh_vacancies = hh_api.get_vacancies("Python")
-# print(hh_api.call_vacancies())
+# print(hh_vacancies)
 
 # Преобразование набора данных из JSON в список объектов (ORIGINAL)
 vacancies_list = Vacancy.cast_to_object_list(hh_vacancies)
-# print(vacancies_list)
-
 
 # # # Пример работы конструктора класса с одной вакансией
-# vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>",
-#                   "100 000-200 000 руб.", "Требования: опыт работы от 3 лет...")
+vacancy = Vacancy("Python Developer", "<https://hh.ru/vacancy/123456>",
+                  "100 000-200 000 руб.", "Требования: опыт работы от 3 лет...")
 
 # print(vacancy.name)
 # print(vacancy.url)
@@ -33,14 +31,15 @@ vacancies_list = Vacancy.cast_to_object_list(hh_vacancies)
 # print(JSONSaver.save_in_json())
 
 # # Сохранение информации о вакансиях в файл
+
 json_saver = JSONSaver()
+json_saver.save_data_in_file(vacancies_list)
 
-print(json_saver.call_json_file_by_parameters("Python"))
-
-# json_saver.add_vacancy(vacancy)
+json_saver.add_vacancy(vacancy)
 
 # json_saver.delete_vacancy(vacancy)
-#
+print(json_saver.call_json_file_by_parameters("Python"))
+
 # # Функция для взаимодействия с пользователем
 # def user_interaction():
 #     platforms = ["HeadHunter"]

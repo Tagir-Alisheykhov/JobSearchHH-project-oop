@@ -7,11 +7,18 @@
         "responsibility": "Разработка бэка для веб-приложений и мобильных приложений в проекте, включающем геоинформационную систему, корпоративный портал, систему аналитики. Поддержка работоспособности, доработка..."
     },
     {
-        "name": "Программист Python(Django)",
-        "url": "https://hh.ru/vacancy/111403400",
-        "salary": 150000,
-        "requirement": "Уверенное владение <highlighttext>Python</highlighttext> 3.8+, Django 2.2+. Желателен опыт с celery, django-rest-framework. Знание базовых паттернов...",
-        "responsibility": "Работа над заказными веб-проектами из различных областей бизнеса."
+        "name": "Тестировщик программного продукта (Middle)",
+        "url": "https://hh.ru/vacancy/111611999",
+        "salary": null,
+        "requirement": "Знание языков программирования, на которых ведется разработка продукта (JavaScript, <highlighttext>Python</highlighttext>, С++, Go). Опыт работы со средствами автоматического тестирования. ",
+        "responsibility": "Проведение тестирования различных видов:интеграционное тестирование, тестирование Ul и UX, кросс-браузерное тестирование web-приложений(frontend/ backend (postgreSQL)),web-сервиса..."
+    },
+    {
+        "name": "Младший Python-разработчик в команду DCIM",
+        "url": "https://hh.ru/vacancy/111612662",
+        "salary": null,
+        "requirement": "Хорошее знание языка <highlighttext>Python</highlighttext>. Знание основных шаблонов проектирования и особенностей их реализации. Уверенная работа с Git. Опыт работы с PostgreSQL...",
+        "responsibility": "Отдел систем управления инфраструктурой ДЦ (DCIM) - это направление, которое занимается разработкой информационных систем для учета и визуализации инфраструктуры и активов..."
     },
     {
         "name": "Специалист по тестированию ПО",
@@ -21,18 +28,11 @@
         "responsibility": "Осуществление всех видов тестирования: smoke, регресс, нагрузочное, новая функциональность, участие в ПМИ\\ПСИ и тестирование требований. Постановка багов разработчикам, описание..."
     },
     {
-        "name": "Тестировщик ПО",
-        "url": "https://hh.ru/vacancy/109064484",
-        "salary": 120000,
-        "requirement": "Будет Вашим преимуществом: Навыки написания скриптов на <highlighttext>Python</highlighttext> для автоматизации тестирования и работы с тестовыми данными. Опыт работы с системой...",
-        "responsibility": "Организация процесса тестирования. Описание и выполнение тест-кейсов. Проведение ручного и автоматизированного тестирования веб-приложений."
-    },
-    {
-        "name": "Junior Python Developer",
-        "url": "https://hh.ru/vacancy/110711272",
-        "salary": null,
-        "requirement": "Basic knowledge of <highlighttext>Python</highlighttext> or 1 year in a role focused on <highlighttext>Python</highlighttext> backend development (perfectly with Django framework). ",
-        "responsibility": "Build and maintain back-end for Improvado's marketing analytics SaaS platform (including architectural improvements regarding scalability, reliability and performance). "
+        "name": "Программист Python(Django)",
+        "url": "https://hh.ru/vacancy/111403400",
+        "salary": 150000,
+        "requirement": "Уверенное владение <highlighttext>Python</highlighttext> 3.8+, Django 2.2+. Желателен опыт с celery, django-rest-framework. Знание базовых паттернов...",
+        "responsibility": "Работа над заказными веб-проектами из различных областей бизнеса."
     },
     {
         "name": "Разработчик бэк-офиса на Python",
@@ -49,20 +49,6 @@
         "responsibility": "Разрабатывать и реализовывать стратегий анализа данных для оптимизации работы с клиентской базой. Анализировать сложные данные, интерпретировать результаты и предоставлять стратегические..."
     },
     {
-        "name": "Backend-разработчик",
-        "url": "https://hh.ru/vacancy/111513705",
-        "salary": 200000,
-        "requirement": "3+ года опыта работы в backend-разработке на Python.Умение писать чистый, понятный и документированный код. Знание фреймворков: Django, Flask...",
-        "responsibility": "Разработка и поддержка backend-части платформы: Создание API для работы фронтенда и аналитических сервисов. Интеграция с системами маркетплейсов и рекламными..."
-    },
-    {
-        "name": "Python разработчик (Junior)",
-        "url": "https://hh.ru/vacancy/111581129",
-        "salary": null,
-        "requirement": "Имеете опыт работы с другими языками программирования, помимо <highlighttext>Python</highlighttext>, такими как PHP, JavaScript, Java, C++ и т.д. ",
-        "responsibility": "Разработка ботов для автоматизации рутинных задач с помощью библиотеки Selenium (или её аналогов). Создание и поддержка веб-приложения с использованием..."
-    },
-    {
         "name": "QA-инженер / Тестировщик программного обеспечения",
         "url": "https://hh.ru/vacancy/111492971",
         "salary": 80000,
@@ -70,11 +56,25 @@
         "responsibility": "Тестирование ПО и интеграций с оборудованием. Разработка тест-кейсов, чек-листов. Анализ логов. Моделирование ошибок пользователей, исследование причин сбоев."
     },
     {
-        "name": "Тестировщик программного продукта (Middle)",
-        "url": "https://hh.ru/vacancy/111611999",
+        "name": "Backend-разработчик",
+        "url": "https://hh.ru/vacancy/111513705",
+        "salary": 200000,
+        "requirement": "3+ года опыта работы в backend-разработке на Python.Умение писать чистый, понятный и документированный код. Знание фреймворков: Django, Flask...",
+        "responsibility": "Разработка и поддержка backend-части платформы: Создание API для работы фронтенда и аналитических сервисов. Интеграция с системами маркетплейсов и рекламными..."
+    },
+    {
+        "name": "Тестировщик ПО",
+        "url": "https://hh.ru/vacancy/109064484",
+        "salary": 120000,
+        "requirement": "Будет Вашим преимуществом: Навыки написания скриптов на <highlighttext>Python</highlighttext> для автоматизации тестирования и работы с тестовыми данными. Опыт работы с системой...",
+        "responsibility": "Организация процесса тестирования. Описание и выполнение тест-кейсов. Проведение ручного и автоматизированного тестирования веб-приложений."
+    },
+    {
+        "name": "Python-разработчик",
+        "url": "https://hh.ru/vacancy/111353360",
         "salary": null,
-        "requirement": "Знание языков программирования, на которых ведется разработка продукта (JavaScript, <highlighttext>Python</highlighttext>, С++, Go). Опыт работы со средствами автоматического тестирования. ",
-        "responsibility": "Проведение тестирования различных видов:интеграционное тестирование, тестирование Ul и UX, кросс-браузерное тестирование web-приложений(frontend/ backend (postgreSQL)),web-сервиса..."
+        "requirement": "Коммерческий опыт работы с <highlighttext>Python</highlighttext> от 2 лет. Знание <highlighttext>Python</highlighttext> Core и стандартной библиотеки. Опыт работы с фреймворками (Django / FastAPI...",
+        "responsibility": null
     },
     {
         "name": "QA Manual (гибрид)",
@@ -84,11 +84,11 @@
         "responsibility": "Ведение тестовой документации: баг-репорты, тест-кейсы, чек-листы и отчеты о тестировании. Применение подходящей техники тест-дизайна при проектировании..."
     },
     {
-        "name": "QA Engineer (Kintsugi)",
-        "url": "https://hh.ru/vacancy/111587362",
-        "salary": null,
-        "requirement": "Умение анализировать требования и составлять тест-кейсы и тест-планы. Опыт автоматизации тестирования. Знание <highlighttext>Python</highlighttext>. Базовые знания Linux/UNIX. ",
-        "responsibility": "Автоматизированное тестирование высоконагруженного облачного приложения, работающего в режиме 24/7. Разработка тест-сценариев. Проведение нагрузочных испытаний продукта и его частей..."
+        "name": "ML аналитик в биг-тех 0ПГ",
+        "url": "https://hh.ru/vacancy/111447215",
+        "salary": 120000,
+        "requirement": "Отличное владение <highlighttext>Python</highlighttext>, SQL, ML-фреймворками (например, TensorFlow, PyTorch, scikit-learn) и инструментами для работы с данными (например, Pandas, NumPy). ",
+        "responsibility": "Анализировать массивы данных из переписок Whatsapp на предмет поиск грызуна в коллективе. Запуск симуляций на тему \"лучший способ войти в..."
     },
     {
         "name": "Junior Data Scientist",
@@ -98,18 +98,11 @@
         "responsibility": "Исследование данных из различных корпоративных источников для извлечения ценной для бизнеса информации. Формирование требований к источникам данных, необходимых для реализации..."
     },
     {
-        "name": "ML аналитик в биг-тех 0ПГ",
-        "url": "https://hh.ru/vacancy/111447215",
-        "salary": 120000,
-        "requirement": "Отличное владение <highlighttext>Python</highlighttext>, SQL, ML-фреймворками (например, TensorFlow, PyTorch, scikit-learn) и инструментами для работы с данными (например, Pandas, NumPy). ",
-        "responsibility": "Анализировать массивы данных из переписок Whatsapp на предмет поиск грызуна в коллективе. Запуск симуляций на тему \"лучший способ войти в..."
-    },
-    {
-        "name": "Аналитик данных",
-        "url": "https://hh.ru/vacancy/111530211",
-        "salary": 150000,
-        "requirement": "Знание Excel для целей построения отчетов и расчетных моделей (вкл. использование PowerQuery). - Базовые навыки использования <highlighttext>Python</highlighttext> для анализа данных приветствуются.",
-        "responsibility": "Построение аналитической отчетности в среде Qlik Sense (подключение к источникам данных, разработка логики расчетов и визуализация конечных данных). - "
+        "name": "QA engineer (ручное тестирование)",
+        "url": "https://hh.ru/vacancy/110081935",
+        "salary": 0,
+        "requirement": "Умение анализировать логи для диагностики проблем. - Базовые навыки программирования или автоматизации тестов (<highlighttext>Python</highlighttext>, Shell-скрипты). - Опыт работы с Linux. ",
+        "responsibility": "Формирование планов тестирования и тест-кейсов. Проведение функционального, регрессионного и нагрузочного тестирования. Выполнение тестирования API. Проверка UI/UX на соответствие..."
     },
     {
         "name": "Java Developer",
@@ -119,18 +112,46 @@
         "responsibility": "Java 6: доработки в коробку Flextera от Diasoft. Java 8: доработки в коробку Flextera от Diasoft. Java 11: доработки в..."
     },
     {
+        "name": "Аналитик данных",
+        "url": "https://hh.ru/vacancy/111530211",
+        "salary": 150000,
+        "requirement": "Знание Excel для целей построения отчетов и расчетных моделей (вкл. использование PowerQuery). - Базовые навыки использования <highlighttext>Python</highlighttext> для анализа данных приветствуются.",
+        "responsibility": "Построение аналитической отчетности в среде Qlik Sense (подключение к источникам данных, разработка логики расчетов и визуализация конечных данных). - "
+    },
+    {
+        "name": "Python разработчик (Junior)",
+        "url": "https://hh.ru/vacancy/111581129",
+        "salary": null,
+        "requirement": "Имеете опыт работы с другими языками программирования, помимо <highlighttext>Python</highlighttext>, такими как PHP, JavaScript, Java, C++ и т.д. ",
+        "responsibility": "Разработка ботов для автоматизации рутинных задач с помощью библиотеки Selenium (или её аналогов). Создание и поддержка веб-приложения с использованием..."
+    },
+    {
+        "name": "Manual QA Engineer",
+        "url": "https://hh.ru/vacancy/107640601",
+        "salary": 0,
+        "requirement": "Опыт тестирования web-приложений (клиент-серверная архитектура, REST API) от 2 лет. Английский на уровне B1+ (разговорный). ",
+        "responsibility": "Ручное тестирование веб-приложений (функциональное, интеграционное, регрессионное и т. д..), из которых 60% времени уделяется тестированию backend'а. "
+    },
+    {
+        "name": "Junior Python Developer",
+        "url": "https://hh.ru/vacancy/110711272",
+        "salary": null,
+        "requirement": "Basic knowledge of <highlighttext>Python</highlighttext> or 1 year in a role focused on <highlighttext>Python</highlighttext> backend development (perfectly with Django framework). ",
+        "responsibility": "Build and maintain back-end for Improvado's marketing analytics SaaS platform (including architectural improvements regarding scalability, reliability and performance). "
+    },
+    {
+        "name": "QA Engineer (Kintsugi)",
+        "url": "https://hh.ru/vacancy/111587362",
+        "salary": null,
+        "requirement": "Умение анализировать требования и составлять тест-кейсы и тест-планы. Опыт автоматизации тестирования. Знание <highlighttext>Python</highlighttext>. Базовые знания Linux/UNIX. ",
+        "responsibility": "Автоматизированное тестирование высоконагруженного облачного приложения, работающего в режиме 24/7. Разработка тест-сценариев. Проведение нагрузочных испытаний продукта и его частей..."
+    },
+    {
         "name": "Backend-разработчик",
         "url": "https://hh.ru/vacancy/111307834",
         "salary": 200000,
         "requirement": "Уверенные знания : <highlighttext>Python</highlighttext> (FastAPI). - Опыт работы с PostgreSQL. - Знание принципов построения микросервисной архитектуры. - Опыт работы с Docker, понимание CI/CD. - ",
         "responsibility": "Разработка и поддержка новых функциональных модулей системы. Интеграция с внешними API сторонних систем. Оптимизация работы микросервисов и базы данных. "
-    },
-    {
-        "name": "Python-разработчик",
-        "url": "https://hh.ru/vacancy/111353360",
-        "salary": null,
-        "requirement": "Коммерческий опыт работы с <highlighttext>Python</highlighttext> от 2 лет. Знание <highlighttext>Python</highlighttext> Core и стандартной библиотеки. Опыт работы с фреймворками (Django / FastAPI...",
-        "responsibility": null
     },
     {
         "name": "Junior Python Developer",
@@ -180,13 +201,6 @@
         "salary": null,
         "requirement": "Опыт работы с <highlighttext>Python</highlighttext> от 1 года. Знание и опыт работы с базами данных PostgreSQL и MongoDB. Уверенное владение SQL...",
         "responsibility": "Разработка и поддержка серверной части. Работа с базами данных PostgreSQL и MongoDB: написание SQL-запросов, их анализ и оптимизация. "
-    },
-    {
-        "name": "Младший Python-разработчик в команду DCIM",
-        "url": "https://hh.ru/vacancy/111612662",
-        "salary": null,
-        "requirement": "Хорошее знание языка <highlighttext>Python</highlighttext>. Знание основных шаблонов проектирования и особенностей их реализации. Уверенная работа с Git. Опыт работы с PostgreSQL...",
-        "responsibility": "Отдел систем управления инфраструктурой ДЦ (DCIM) - это направление, которое занимается разработкой информационных систем для учета и визуализации инфраструктуры и активов..."
     },
     {
         "name": "Python developer",

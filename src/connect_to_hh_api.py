@@ -5,12 +5,10 @@
 import re
 import json
 import requests
+from os import path
 from typing import Any
-
 from itertools import chain
 from abc import ABC, abstractmethod
-
-from os import path
 
 path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
 
@@ -18,8 +16,8 @@ path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
 class AbstractHHAPI(ABC):
     """
     Абстрактный класс для работы API сервиса вакансий
-    """
 
+    """
     @abstractmethod
     def get_vacancies(self, *args: Any, **kwargs: Any) -> Any:
         """Получение вакансий из сервиса"""
@@ -157,8 +155,6 @@ class CastToListObjects:
                 Vacancy(name, url, salary, requirement, responsibility)
             )
             vacancies_list.append(returned_obj_vacancy)
-        import_vacancies_list = JSONSaver()
-        import_vacancies_list.save_data_in_file(vacancies_list)
         return vacancies_list
 
 
@@ -241,18 +237,23 @@ class FileSaver(ABC):
 
 class JSONSaver(FileSaver):
     """
-    Класс для добавления информации о вакансиях в JSON-файл
+    Класс для добавления информации о вакансиях в JSON-файл.
 
     """
-    filename: str
     filtered_data = list()
 
-    def __init__(self, filename='vacancies_info'):
+    def __init__(self, filename=None):
         """
         Инициализация атрибутов.
 
         """
-        self.path_to_file = path_to_data + filename + '.json'
+        self.filename = filename if filename else "DefaultName"
+        self.path_to_file = path_to_data + self.filename + '.json'
+        if not path.exists(self.path_to_file):
+            with open(self.path_to_file, 'w', encoding='UTF-8') as file:
+                empty_value_json = []
+                json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
+        self.absolut_path_to_file = self.path_to_file
 
     def file_validate(self, new_data: list | dict) -> None:
         """
@@ -260,30 +261,12 @@ class JSONSaver(FileSaver):
         Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
 
         """
-        if isinstance(new_data, dict):
-            new_data = list(new_data)
-        if self.path_to_file:
-            try:
-                with open(self.path_to_file, "r", encoding="UTF-8") as old_file_path:
-                    old_file_data = json.load(old_file_path)
-                    # Объединение старых и новых вакансий
-                    if isinstance(new_data, list):
-                        new_data.extend(old_file_data)
-                    else:
-                        raise TypeError
-                    # Исключение дублей вакансий
-                    formatted_file = list({d["url"]: d for d in new_data}.values())
-            except json.JSONDecodeError:
-                print("Файл пуст")
-            except TypeError as err:
-                raise TypeError(f"Ошибка типа входных данных {err}")
-            else:
-                # Создание нового файла с добавленными новыми вакансиями
-                with open(self.path_to_file, "w", encoding="UTF-8") as old_file_path:
-                    json.dump(formatted_file, old_file_path, indent=4, ensure_ascii=False)
-        else:
-            with open(self.path_to_file, "w", encoding="UTF-8") as new_file_path:
-                json.dump(new_data, new_file_path, indent=4, ensure_ascii=False)
+        with open(self.absolut_path_to_file, 'r+', encoding="UTF-8") as file:
+            empty_file = json.load(file)
+            empty_file.extend(new_data)
+            formatted_file = list({d["url"]: d for d in empty_file}.values())
+            with open(self.absolut_path_to_file, 'w+', encoding="UTF-8") as file_:
+                json.dump(formatted_file, file_, indent=4, ensure_ascii=False)
 
     def creating_dictionary_vacancy(self, data: list) -> None:
         """
@@ -292,7 +275,9 @@ class JSONSaver(FileSaver):
         """
         new_list_dict = list()
         for vacancy in data:
-            if isinstance(vacancy, Vacancy):
+            if not isinstance(vacancy, Vacancy):
+                raise TypeError('Неверный тип атрибута/ов вакансии')
+            elif isinstance(vacancy, Vacancy):
                 formation_dict = dict()
                 formation_dict['name'] = vacancy.name
                 formation_dict['url'] = vacancy.url
@@ -300,9 +285,7 @@ class JSONSaver(FileSaver):
                 formation_dict['requirement'] = vacancy.requirement
                 formation_dict['responsibility'] = vacancy.responsibility
                 new_list_dict.append(formation_dict)
-            else:
-                raise TypeError('Неверный тип атрибута/ов вакансии')
-        self.file_validate(new_list_dict)
+        return self.file_validate(new_list_dict)
 
     def save_data_in_file(self, *information_vacancies: list) -> None:
         """
@@ -314,7 +297,7 @@ class JSONSaver(FileSaver):
         self.creating_dictionary_vacancy(flattened_data)
 
     def call_json_file_by_parameters(self,
-                                     keyword: str = False,
+                                     keyword: str = " ",
                                      salary_from: int = False,
                                      salary_to: int = False
                                      ) -> str:
@@ -328,30 +311,30 @@ class JSONSaver(FileSaver):
         Можно указать только один параметр или сразу оба.
 
         """
-        with open(self.path_to_file, "r", encoding="utf-8") as js_file:
+        with open(self.path_to_file, 'r', encoding="utf-8") as js_file:
             data = json.load(js_file)
-        for vacancy in data:
-            key_true_vacancies = None
-            # Фильтрация вакансий по ключевому слову
-            for value in vacancy.values():
-                if isinstance(value, str) and keyword in value:
-                    key_true_vacancies = vacancy
-            # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
-            if key_true_vacancies:
-                if salary_from and salary_to and salary_from < salary_to:
-                    if salary_from <= key_true_vacancies['salary'] <= salary_to:
+            for vacancy in data:
+                key_true_vacancies = None
+                # Фильтрация вакансий по ключевому слову
+                for value in vacancy.values():
+                    if isinstance(value, str) and keyword in value:
+                        key_true_vacancies = vacancy
+                # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
+                if key_true_vacancies:
+                    if salary_from and salary_to and salary_from < salary_to:
+                        if salary_from <= key_true_vacancies['salary'] <= salary_to:
+                            self.filtered_data.append(vacancy)
+                    elif not salary_from and not salary_to:
                         self.filtered_data.append(vacancy)
-                elif not salary_from and not salary_to:
-                    self.filtered_data.append(vacancy)
-                elif (salary_from and not salary_to and
-                      key_true_vacancies["salary"] >= salary_from):
-                    self.filtered_data.append(vacancy)
-                elif (salary_to and not salary_from and
-                      key_true_vacancies["salary"] <= salary_to):
-                    self.filtered_data.append(vacancy)
-                elif salary_from > salary_to:
-                    raise ValueError("'salary_from' не может быть больше 'salary_to'")
-        return json.dumps(self.filtered_data, indent=4, ensure_ascii=False)
+                    elif (salary_from and not salary_to and
+                          key_true_vacancies["salary"] >= salary_from):
+                        self.filtered_data.append(vacancy)
+                    elif (salary_to and not salary_from and
+                          key_true_vacancies["salary"] <= salary_to):
+                        self.filtered_data.append(vacancy)
+                    elif salary_from > salary_to:
+                        raise ValueError("'salary_from' не может быть больше 'salary_to'")
+            return json.dumps(self.filtered_data, indent=4, ensure_ascii=False)
 
     def add_vacancy(self, *vacancy: Vacancy) -> None:
         """
@@ -392,3 +375,153 @@ class JSONSaver(FileSaver):
                 json.dump(formatted_file_json, file,
                           indent=4,
                           ensure_ascii=False)
+
+# ПРОВЕРЬ РАБОТУ call_json_file_by_parameters С ПАРАМЕТРАМИ И БЕЗ НИХ
+# А ТАКЖЕ ПОПРОБУЙ ПОМЕСТИТЬ ПЕРЕМЕННУЮ КЛАССА filtered_data = list() ВНУТРЬ ДАННОЙ ФУНКЦИИ
+
+
+
+
+
+
+# ----------------------
+#     def __init__(self, filename=None):
+#         """
+#         Инициализация атрибутов.
+#
+#         """
+#
+#         self.filename = filename if filename else "DefaultName"
+#
+#         # if not self.filename:
+#         #     self.filename = "DefaultName"
+#         #     print(f"1. Отработало условие: {self.filename}")
+#
+#         print(f'2. Отработал основной поток: {self.filename}')
+#
+#         self.path_to_file = path_to_data + self.filename + '.json'
+#
+#         if not path.exists(self.path_to_file):
+#             with open(self.path_to_file, 'w', encoding='UTF-8') as file:
+#                 empty_value_json = []
+#                 json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
+#         self.path_to_file = self.path_to_file
+# -----------------------
+# class JSONSaver(FileSaver):
+#
+#     def __init__(self, filename=None):
+#         self.filename = filename if filename else "DefaultName"
+#         print(self.filename)
+#         self.path_to_file = path_to_data + self.filename + '.json'
+#
+#     def file_validate(self, new_data: list | dict) -> None:
+#         """
+#         Валидация файла и его обработка перед записью в JSON-файл
+#         Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
+#
+#         """
+#         print(f'3.1 Отработал метод file_validate')
+#         print(f'3.1. (Имя файла {self.filename})')
+#         print('----------------------')
+#
+#         with open(self.path_to_file, 'r+', encoding="UTF-8") as file:
+#             empty_file = json.load(file)
+#
+#             print(f'3.2. Отработал метод file_validate')
+#             print(f'3.2. (Имя файла {self.filename})')
+#             print('----------------------')
+#             # Исключение дублей вакансий
+#             formatted_file = list({d["url"]: d for d in empty_file}.values())
+#
+#             formatted_file.extend(new_data)
+#
+#             print(f'3.3. Отработал метод file_validate')
+#             print(f'3.3. (Имя файла {self.filename})')
+#             print('----------------------')
+#
+#             with open(self.path_to_file, 'w+', encoding="UTF-8") as file_:
+#                 json.dump(formatted_file, file_, indent=4, ensure_ascii=False)
+#             print(f'3.4. Отработал метод file_validate')
+#             print(f'3.4. (Имя файла {self.filename})')
+#             print('----------------------')
+#
+#     def creating_dictionary_vacancy(self, data: list) -> None:
+#         """
+#         Создание словаря из полученных параметров вакансии
+#
+#         """
+#         print(f'4.1 creating_dictionary_vacancy')
+#         print(f'4.1. (Имя файла {self.filename})')
+#         print('----------------------')
+#
+#         new_list_dict = list()
+#         for vacancy in data:
+#             if isinstance(vacancy, Vacancy):
+#                 formation_dict = dict()
+#                 formation_dict['name'] = vacancy.name
+#                 formation_dict['url'] = vacancy.url
+#                 formation_dict['salary'] = vacancy.salary
+#                 formation_dict['requirement'] = vacancy.requirement
+#                 formation_dict['responsibility'] = vacancy.responsibility
+#                 new_list_dict.append(formation_dict)
+#             else:
+#                 raise TypeError('Неверный тип атрибута/ов вакансии')
+#         self.file_validate(new_list_dict)
+#
+#     def save_data_in_file(self, *information_vacancies: list) -> None:
+#         """
+#         Сохраняем информацию о вакансиях в формате JSON
+#
+#         """
+#         print(f'5.1 save_data_in_file')
+#         print(f'5.1. (Имя файла {self.filename})')
+#         print('----------------------')
+#
+#         # Удаление лишнего списка верхнего уровня
+#         flattened_data = list(chain.from_iterable(information_vacancies))
+#         # print(self.creating_dictionary_vacancy(flattened_data))
+#         self.creating_dictionary_vacancy(flattened_data)
+#
+#     def add_vacancy(self):
+#         pass
+#
+#     def delete_vacancy(self):
+#         pass
+
+
+
+
+
+
+
+
+    # def file_validate(self, new_data: list | dict) -> None:
+    #     """
+    #     Валидация файла и его обработка перед записью в JSON-файл
+    #     Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
+    #
+    #     """
+    #     if isinstance(new_data, dict):
+    #         new_data = list(new_data)
+    #     if self.path_to_file:
+    #         try:
+    #             with open(self.path_to_file, "r", encoding="UTF-8") as old_file_path:
+    #                 old_file_data = json.load(old_file_path)
+    #                 # Объединение старых и новых вакансий
+    #                 if isinstance(new_data, list):
+    #                     new_data.extend(old_file_data)
+    #                 else:
+    #                     raise TypeError
+    #                 # Исключение дублей вакансий
+    #                 formatted_file = list({d["url"]: d for d in new_data}.values())
+    #         except json.JSONDecodeError as err:
+    #             print(f"Файл пуст(1) {err}")
+    #         except TypeError as err:
+    #             raise TypeError(f"Ошибка типа входных данных {err}")
+    #         else:
+    #             # Создание нового файла с добавленными новыми вакансиями
+    #             with open(self.path_to_file, "w", encoding="UTF-8") as old_file_path:
+    #                 json.dump(formatted_file, old_file_path, indent=4, ensure_ascii=False)
+    #     else:
+    #         with open(self.path_to_file, "w", encoding="UTF-8") as new_file_path:
+    #             json.dump(new_data, new_file_path, indent=4, ensure_ascii=False)
