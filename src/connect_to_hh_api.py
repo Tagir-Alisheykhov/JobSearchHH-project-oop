@@ -2,6 +2,7 @@
 
 
 """
+import os.path
 import re
 import json
 import requests
@@ -9,6 +10,8 @@ from os import path
 from typing import Any
 from itertools import chain
 from abc import ABC, abstractmethod
+
+from src.utils import top_n_func
 
 path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
 
@@ -242,17 +245,16 @@ class JSONSaver(FileSaver):
     """
     filtered_data = list()
 
-    def __init__(self, filename=None):
+    def __init__(self, filename='DefaultFilename'):
         """
         Инициализация атрибутов.
 
         """
-        self.filename = filename if filename else "DefaultName"
+        self.filename = filename
         self.path_to_file = path_to_data + self.filename + '.json'
-        if not path.exists(self.path_to_file):
-            with open(self.path_to_file, 'w', encoding='UTF-8') as file:
-                empty_value_json = []
-                json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
+        with open(self.path_to_file, 'w', encoding='UTF-8') as file:
+            empty_value_json = []
+            json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
         self.absolut_path_to_file = self.path_to_file
 
     def file_validate(self, new_data: list | dict) -> None:
@@ -297,6 +299,7 @@ class JSONSaver(FileSaver):
         self.creating_dictionary_vacancy(flattened_data)
 
     def call_json_file_by_parameters(self,
+                                     top_number: int = None,
                                      keyword: str = " ",
                                      salary_from: int = False,
                                      salary_to: int = False
@@ -311,16 +314,28 @@ class JSONSaver(FileSaver):
         Можно указать только один параметр или сразу оба.
 
         """
-        with open(self.path_to_file, 'r', encoding="utf-8") as js_file:
-            data = json.load(js_file)
+        # Функция с параметром "Поисковой запрос"
+        # Функция с параметром "Топ-х вакансий"
+        # Функция фильтрация вакансий по ключевому слову
+        # Функция фильтрации по диапазону зарплат
+
+        with open(self.absolut_path_to_file, 'r', encoding="utf-8") as js_file:
+            data = json.load(js_file)  # Выводит транзакции по запросу (уже обработанные)
+            # Фильтрация данных с выводом зарплат в порядке убывания
+            data = top_n_func(top_number, data)
+
             for vacancy in data:
                 key_true_vacancies = None
+                # print(vacancy)
                 # Фильтрация вакансий по ключевому слову
                 for value in vacancy.values():
+                    # print(value)
                     if isinstance(value, str) and keyword in value:
                         key_true_vacancies = vacancy
+
                 # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
                 if key_true_vacancies:
+                    # print(json.dumps(key_true_vacancies, indent=4, ensure_ascii=False))
                     if salary_from and salary_to and salary_from < salary_to:
                         if salary_from <= key_true_vacancies['salary'] <= salary_to:
                             self.filtered_data.append(vacancy)
@@ -334,6 +349,7 @@ class JSONSaver(FileSaver):
                         self.filtered_data.append(vacancy)
                     elif salary_from > salary_to:
                         raise ValueError("'salary_from' не может быть больше 'salary_to'")
+
             return json.dumps(self.filtered_data, indent=4, ensure_ascii=False)
 
     def add_vacancy(self, *vacancy: Vacancy) -> None:
