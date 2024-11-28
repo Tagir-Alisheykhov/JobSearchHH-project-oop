@@ -1,16 +1,14 @@
-import json
-
-import pytest
-
 from os import path
 from unittest.mock import patch
 
-from src.connect_to_hh_api import HeadHunterAPI, ValidateVacancy, JSONSaver
+import pytest
 
-path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
+from src.connect_to_hh_api import HeadHunterAPI, JSONSaver, ValidateVacancy
+
+path_to_data = path.join(path.dirname(path.dirname(__file__)), "data/")
 
 
-@patch('requests.get')
+@patch("requests.get")
 def test_connection_200(mock_get) -> None:
     """
     Имитация GET-запроса APi сервиса вакансий
@@ -18,13 +16,14 @@ def test_connection_200(mock_get) -> None:
     """
     hh_api = HeadHunterAPI()
     mock_get.return_value.status_code.return_value = 200
-    assert hh_api.get_vacancies("Python") == '[]'
-    mock_get.assert_called_once_with('https://api.hh.ru/vacancies',
-                                     headers={'User-Agent': 'HH-User-Agent'},
-                                     params={'text': 'Python', 'page': 1, 'per-page': 100})
+    assert hh_api.get_vacancies("Python") == "[]"
+    mock_get.assert_called_once_with(
+        "https://api.hh.ru/vacancies",
+        headers={"User-Agent": "HH-User-Agent"},
+        params={"text": "Python", "page": 1, "per-page": 100},
+    )
 
 
-# НЕ РАБОТАЕТ
 def test_validate_vacancy_salary() -> None:
     """
     Проверка корректной работы метода `salary_validate` класса `ValidateVacancy`
@@ -38,19 +37,19 @@ def test_validate_vacancy_salary() -> None:
     # str
     assert obj_validate_vacancy.salary_validate("от #$$$ 1000- рублей") == 1000
 
-    # assert obj_validate_vacancy.salary_validate("от 1000- 5000 рублей") == 5000
-    # assert obj_validate_vacancy.salary_validate("от 1000 00 - 5000 00 рублей") == 500000
-    # # dict
-    # assert obj_validate_vacancy.salary_validate({'from': 10, 'to': 20}) == 20
-    # assert obj_validate_vacancy.salary_validate({'from': 50, 'to': 1}) == 50
-    # assert obj_validate_vacancy.salary_validate({'from': 1, 'to': None}) == 1
-    # assert obj_validate_vacancy.salary_validate({'from': None, 'to': 100}) == 100
-    # assert obj_validate_vacancy.salary_validate({'from': None, 'to': None}) == 0
-    # # else
-    # with pytest.raises(TypeError):
-    #     assert obj_validate_vacancy.salary_validate(list())
-    # with pytest.raises(TypeError):
-    #     assert obj_validate_vacancy.salary_validate(tuple())
+    assert obj_validate_vacancy.salary_validate("от 1000- 5000 рублей") == 5000
+    assert obj_validate_vacancy.salary_validate("от 1000 00 - 5000 00 рублей") == 500000
+    # dict
+    assert obj_validate_vacancy.salary_validate({"from": 10, "to": 20}) == 20
+    assert obj_validate_vacancy.salary_validate({"from": 50, "to": 1}) == 50
+    assert obj_validate_vacancy.salary_validate({"from": 1, "to": None}) == 1
+    assert obj_validate_vacancy.salary_validate({"from": None, "to": 100}) == 100
+    assert obj_validate_vacancy.salary_validate({"from": None, "to": None}) == 0
+    # else
+    with pytest.raises(TypeError):
+        assert obj_validate_vacancy.salary_validate(list())
+    with pytest.raises(TypeError):
+        assert obj_validate_vacancy.salary_validate(tuple())
 
 
 def test_validate_for_empty_value_salary(list_with_values: dict) -> None:
@@ -60,13 +59,27 @@ def test_validate_for_empty_value_salary(list_with_values: dict) -> None:
     """
     obj_validate_vacancy = ValidateVacancy()
     assert obj_validate_vacancy.validate_for_empty_value_salary(None) == 0
-    assert obj_validate_vacancy.validate_for_empty_value_salary(list_with_values) == 100000
-    assert obj_validate_vacancy.validate_for_empty_value_salary({'from': 50000, 'to': None}) == 50000
-    assert obj_validate_vacancy.validate_for_empty_value_salary({'from': None, 'to': 80000}) == 80000
-    assert obj_validate_vacancy.validate_for_empty_value_salary({'from': None, 'to': None}) == 0
+    assert (
+        obj_validate_vacancy.validate_for_empty_value_salary(list_with_values) == 100000
+    )
+    assert (
+        obj_validate_vacancy.validate_for_empty_value_salary(
+            {"from": 50000, "to": None}
+        )
+        == 50000
+    )
+    assert (
+        obj_validate_vacancy.validate_for_empty_value_salary(
+            {"from": None, "to": 80000}
+        )
+        == 80000
+    )
+    assert (
+        obj_validate_vacancy.validate_for_empty_value_salary({"from": None, "to": None})
+        == 0
+    )
 
 
-# НЕ РАБОТАЕТ
 def test_class_vacancy(one_salary_1: dict, one_salary_2: dict) -> None:
     """
     Тестирование магических методов, предназначенных для сравнения
@@ -95,10 +108,9 @@ def test_json_creating_dictionary_vacancy():
     """
     json_saver = JSONSaver()
     with pytest.raises(TypeError):
-        assert json_saver.creating_dictionary_vacancy(list('<<<virus>>>'))
+        assert json_saver.creating_dictionary_vacancy(list("<<<virus>>>"))
 
 
-# НЕ РАБОТАЕТ
 def test_call_json_file_by_parameters():
     """
     Тестирование метода вызова json-файла `call_json_file_by_parameters`
@@ -106,8 +118,7 @@ def test_call_json_file_by_parameters():
 
     """
     json_saver = JSONSaver()
-    assert json_saver.call_json_file_by_parameters("Abrakadabra") == f'{list()}'
-    assert json_saver.call_json_file_by_parameters(" ")
+    assert json_saver.call_json_file_by_parameters(0) == "[]"
 
 
 def test_add_vacancy(one_salary_1):

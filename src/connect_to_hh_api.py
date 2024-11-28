@@ -1,19 +1,22 @@
 """
-
+Модуль содержит классы для реализации функционала -
+вывода актуальных данных о вакансиях из сервиса HH.ru, и последующей их
+фильтрацией посредством указания дополнительных параметров пользователем.
 
 """
-import os.path
-import re
+
 import json
-import requests
+import re
+from abc import ABC, abstractmethod
+from itertools import chain
 from os import path
 from typing import Any
-from itertools import chain
-from abc import ABC, abstractmethod
 
-from src.utils import top_n_func, from_and_to_parameters
+import requests
 
-path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
+from src.utils import from_and_to_parameters, top_n_func
+
+path_to_data = path.join(path.dirname(path.dirname(__file__)), "data/")
 
 
 class AbstractHHAPI(ABC):
@@ -21,6 +24,7 @@ class AbstractHHAPI(ABC):
     Абстрактный класс для работы API сервиса вакансий
 
     """
+
     @abstractmethod
     def get_vacancies(self, *args: Any, **kwargs: Any) -> Any:
         """Получение вакансий из сервиса"""
@@ -32,30 +36,31 @@ class HeadHunterAPI(AbstractHHAPI):
     Класс для подключения к API и получения вакансий
 
     """
+
     def __init__(self):
         """
         Инициализация параметров запроса вывод вакансий в json-формате
 
         """
         self.__url = "https://api.hh.ru/vacancies"
-        self.__headers = {'User-Agent': 'HH-User-Agent'}
-        self.__params = {'text': '', 'page': 1, 'per-page': 100}
+        self.__headers = {"User-Agent": "HH-User-Agent"}
+        self.__params = {"text": "", "page": 1, "per-page": 100}
         self.__vacancies = []
 
-    def __connection_to_api(self, keyword: str) -> int:
+    def __connection_to_api(self, keyword: str) -> Any:
         """
         Метод подключения к API
 
         """
-        self.__params['text'] = keyword
-        response = requests.get(self.__url,
-                                headers=self.__headers,
-                                params=self.__params)
+        self.__params["text"] = keyword
+        response = requests.get(
+            self.__url, headers=self.__headers, params=self.__params
+        )
         if response.status_code == 200:
-            while self.__params.get('page') != 20:
-                vacancies_ = response.json()['items']
+            while self.__params.get("page") != 20:
+                vacancies_ = response.json()["items"]
                 self.__vacancies.extend(vacancies_)
-                self.__params['page'] += 1
+                self.__params["page"] += 1
                 return response.status_code
         else:
             return response.status_code
@@ -66,9 +71,7 @@ class HeadHunterAPI(AbstractHHAPI):
 
         """
         self.__connection_to_api(keyword)
-        return json.dumps(self.__vacancies,
-                          indent=4,
-                          ensure_ascii=False)
+        return json.dumps(self.__vacancies, indent=4, ensure_ascii=False)
 
 
 class ValidateVacancy:
@@ -76,19 +79,19 @@ class ValidateVacancy:
     Класс для валидаций значений класса обработки вакансий
 
     """
+
     @classmethod
-    def salary_validate_input(cls, value: str) -> list[str]:
+    def salary_validate_input(cls, value: str) -> Any:
         """
         Валидация вводимых значений зарплаты
         :return: диапазон зарплат
         """
-        user_input = re.findall(r'(\d[0-9]+)', value)
+        user_input = re.findall(r"(\d[0-9]+)", value)
         if len(user_input) <= 2:
             return user_input
 
     @classmethod
-    def salary_validate(cls, meaning_salary: list | tuple | str | int | float | dict) \
-            -> str | int | float | dict:
+    def salary_validate(cls, meaning_salary: Any) -> Any:
         """
         Валидация значений ключа с зарплатой ('salary') с разными типами данных
 
@@ -102,32 +105,29 @@ class ValidateVacancy:
                 return int(meaning_salary)
             elif isinstance(meaning_salary, str):
                 # 'str'
-                print(f'отладка-1: {meaning_salary}')
-                salary_value = (re.findall(r'\d+[-., ]\d+', meaning_salary) or
-                                re.findall(r'\d+', meaning_salary))
-                print(f'отладка-2: {salary_value}')
+                salary_value = re.findall(
+                    r"\d+[-., ]\d+", meaning_salary
+                ) or re.findall(r"\d+", meaning_salary)
                 cleaned_salary = list()
                 for salary in salary_value:
-                    clean_salary = re.sub(r'[^0-9]', "", salary)
+                    clean_salary = re.sub(r"[^0-9]", "", salary)
                     cleaned_salary.append(int(clean_salary))
-                # return max(cleaned_salary)
+                return max(cleaned_salary)
             elif isinstance(meaning_salary, dict):
                 # 'dict' с ключами "from" и "to"
-                if not meaning_salary['from']:
-                    meaning_salary['from'] = 0
-                if not meaning_salary['to']:
-                    meaning_salary['to'] = 0
-                salary_value = max(meaning_salary['from'],
-                                   meaning_salary['to'])
+                if not meaning_salary["from"]:
+                    meaning_salary["from"] = 0
+                if not meaning_salary["to"]:
+                    meaning_salary["to"] = 0
+                salary_value = max(meaning_salary["from"], meaning_salary["to"])
                 return int(salary_value)
             else:
-                raise TypeError('Неправильный тип атрибута зарплаты')
+                raise TypeError("Неправильный тип атрибута зарплаты")
         elif meaning_salary == 0:
             return meaning_salary
 
     @classmethod
-    def validate_for_empty_value_salary(cls, meaning_salary: dict | None) \
-            -> dict | int:
+    def validate_for_empty_value_salary(cls, meaning_salary: dict | None) -> dict | int:
         """
         Валидация json-файла с вакансиями, на пустые значения ключей
 
@@ -136,10 +136,10 @@ class ValidateVacancy:
             meaning_salary = 0
             return meaning_salary
         else:
-            if not meaning_salary['from']:
-                meaning_salary['from'] = 0
-            if not meaning_salary['to']:
-                meaning_salary['to'] = 0
+            if not meaning_salary["from"]:
+                meaning_salary["from"] = 0
+            if not meaning_salary["to"]:
+                meaning_salary["to"] = 0
             # Дополнительная валидация на корректность значений
             meaning_salary = cls.salary_validate(meaning_salary)
             return meaning_salary
@@ -159,15 +159,17 @@ class CastToListObjects:
         """
         vacancies_list = list()
         for vacancy in json.loads(vacancies):
-            vacancy['salary'] = ValidateVacancy.validate_for_empty_value_salary(vacancy['salary'])
+            vacancy["salary"] = ValidateVacancy.validate_for_empty_value_salary(
+                vacancy["salary"]
+            )
             # Создание списка
-            name = vacancy['name']
-            url = vacancy['alternate_url']
-            salary = vacancy['salary']
-            requirement = vacancy['snippet']['requirement']
-            responsibility = vacancy['snippet']['responsibility']
-            returned_obj_vacancy = (
-                Vacancy(name, url, salary, requirement, responsibility)
+            name = vacancy["name"]
+            url = vacancy["alternate_url"]
+            salary = vacancy["salary"]
+            requirement = vacancy["snippet"]["requirement"]
+            responsibility = vacancy["snippet"]["responsibility"]
+            returned_obj_vacancy = Vacancy(
+                name, url, salary, requirement, responsibility
             )
             vacancies_list.append(returned_obj_vacancy)
         return vacancies_list
@@ -178,7 +180,8 @@ class Vacancy:
     Класс для работы с вакансиями.
 
     """
-    __slots__ = ('name', 'url', 'salary', 'requirement', 'responsibility')
+
+    __slots__ = ("name", "url", "salary", "requirement", "responsibility")
 
     name: str
     link: str
@@ -186,7 +189,7 @@ class Vacancy:
     requirement: str
     responsibility: str
 
-    def __init__(self, name, url, salary, requirement='null', responsibility='null'):
+    def __init__(self, name, url, salary, requirement="null", responsibility="null"):
         """
         Инициализация атрибутов вакансии
 
@@ -256,14 +259,14 @@ class JSONSaver(FileSaver):
 
     """
 
-    def __init__(self, filename='DefaultFilename'):
+    def __init__(self, filename="DefaultFilename"):
         """
         Инициализация атрибутов.
 
         """
         self.filename = filename
-        self.path_to_file = path_to_data + self.filename + '.json'
-        with open(self.path_to_file, 'w', encoding='UTF-8') as file:
+        self.path_to_file = path_to_data + self.filename + ".json"
+        with open(self.path_to_file, "w", encoding="UTF-8") as file:
             empty_value_json = []
             json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
         self.absolut_path_to_file = self.path_to_file
@@ -274,11 +277,11 @@ class JSONSaver(FileSaver):
         Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
 
         """
-        with open(self.absolut_path_to_file, 'r+', encoding="UTF-8") as file:
+        with open(self.absolut_path_to_file, "r+", encoding="UTF-8") as file:
             empty_file = json.load(file)
             empty_file.extend(new_data)
             formatted_file = list({d["url"]: d for d in empty_file}.values())
-            with open(self.absolut_path_to_file, 'w+', encoding="UTF-8") as file_:
+            with open(self.absolut_path_to_file, "w+", encoding="UTF-8") as file_:
                 json.dump(formatted_file, file_, indent=4, ensure_ascii=False)
 
     def creating_dictionary_vacancy(self, data: list) -> None:
@@ -289,14 +292,14 @@ class JSONSaver(FileSaver):
         new_list_dict = list()
         for vacancy in data:
             if not isinstance(vacancy, Vacancy):
-                raise TypeError('Неверный тип атрибута/ов вакансии')
+                raise TypeError("Неверный тип атрибута/ов вакансии")
             elif isinstance(vacancy, Vacancy):
                 formation_dict = dict()
-                formation_dict['name'] = vacancy.name
-                formation_dict['url'] = vacancy.url
-                formation_dict['salary'] = vacancy.salary
-                formation_dict['requirement'] = vacancy.requirement
-                formation_dict['responsibility'] = vacancy.responsibility
+                formation_dict["name"] = vacancy.name
+                formation_dict["url"] = vacancy.url
+                formation_dict["salary"] = vacancy.salary
+                formation_dict["requirement"] = vacancy.requirement
+                formation_dict["responsibility"] = vacancy.responsibility
                 new_list_dict.append(formation_dict)
         return self.file_validate(new_list_dict)
 
@@ -309,12 +312,13 @@ class JSONSaver(FileSaver):
         flattened_data = list(chain.from_iterable(information_vacancies))
         self.creating_dictionary_vacancy(flattened_data)
 
-    def call_json_file_by_parameters(self,
-                                     top_number: int = None,
-                                     keyword: str = None,
-                                     salary_from: int = None,
-                                     salary_to: int = None
-                                     ) -> str:
+    def call_json_file_by_parameters(
+        self,
+        top_number: int = None,
+        keyword: str = None,
+        salary_from: int = None,
+        salary_to: int = None,
+    ) -> str:
         """
         Получение данных из JSON-файла по указанным критериям.
         Имеет необязательные критерии, такие как:
@@ -326,7 +330,7 @@ class JSONSaver(FileSaver):
 
         """
         filtered_data = list()
-        with open(self.absolut_path_to_file, 'r', encoding="utf-8") as js_file:
+        with open(self.absolut_path_to_file, "r", encoding="utf-8") as js_file:
             data = json.load(js_file)
             # Фильтрация данных с выводом зарплат в порядке убывания
             if top_number:
@@ -342,8 +346,12 @@ class JSONSaver(FileSaver):
                         else:
                             key_true_vacancies = vacancy
                 # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
-                if key_true_vacancies is not None and isinstance(key_true_vacancies, dict):
-                    res = from_and_to_parameters(salary_from, salary_to, key_true_vacancies)
+                if key_true_vacancies is not None and isinstance(
+                    key_true_vacancies, dict
+                ):
+                    res = from_and_to_parameters(
+                        salary_from, salary_to, key_true_vacancies
+                    )
                     filtered_data.append(res)
             return json.dumps(filtered_data, indent=2, ensure_ascii=False)
 
@@ -362,205 +370,27 @@ class JSONSaver(FileSaver):
 
         """
         formatted_file_json = list()
-        del_vacancy_name = ''
-        del_vacancy_url = ''
+        del_vacancy_name = ""
+        del_vacancy_url = ""
         del_vacancy_salary = 0
         try:
-            with open(self.path_to_file, 'r+', encoding="UTF-8") as file:
+            with open(self.path_to_file, "r+", encoding="UTF-8") as file:
                 data = json.load(file)
         except json.JSONDecodeError:
-            raise ValueError('Файл пуст')
+            raise ValueError("Файл пуст")
         else:
             for param in list(del_vacancy):
                 del_vacancy_name = param.name
                 del_vacancy_url = param.url
                 del_vacancy_salary = param.salary
             for vacancy in data:
-                if (vacancy.get('name') == del_vacancy_name and
-                        vacancy.get('url') == del_vacancy_url and
-                        vacancy.get('salary') == del_vacancy_salary):
+                if (
+                    vacancy.get("name") == del_vacancy_name
+                    and vacancy.get("url") == del_vacancy_url
+                    and vacancy.get("salary") == del_vacancy_salary
+                ):
                     del vacancy
                 else:
                     formatted_file_json.append(vacancy)
-            with open(self.path_to_file, 'w', encoding="UTF-8") as file:
-                json.dump(formatted_file_json, file,
-                          indent=4,
-                          ensure_ascii=False)
-
-# ПРОВЕРЬ РАБОТУ call_json_file_by_parameters С ПАРАМЕТРАМИ И БЕЗ НИХ
-# А ТАКЖЕ ПОПРОБУЙ ПОМЕСТИТЬ ПЕРЕМЕННУЮ КЛАССА filtered_data = list() ВНУТРЬ ДАННОЙ ФУНКЦИИ
-
-
-
-
-
-
-# ----------------------
-#     def __init__(self, filename=None):
-#         """
-#         Инициализация атрибутов.
-#
-#         """
-#
-#         self.filename = filename if filename else "DefaultName"
-#
-#         # if not self.filename:
-#         #     self.filename = "DefaultName"
-#         #     print(f"1. Отработало условие: {self.filename}")
-#
-#         print(f'2. Отработал основной поток: {self.filename}')
-#
-#         self.path_to_file = path_to_data + self.filename + '.json'
-#
-#         if not path.exists(self.path_to_file):
-#             with open(self.path_to_file, 'w', encoding='UTF-8') as file:
-#                 empty_value_json = []
-#                 json.dump(empty_value_json, file, indent=4, ensure_ascii=False)
-#         self.path_to_file = self.path_to_file
-# -----------------------
-# class JSONSaver(FileSaver):
-#
-#     def __init__(self, filename=None):
-#         self.filename = filename if filename else "DefaultName"
-#         print(self.filename)
-#         self.path_to_file = path_to_data + self.filename + '.json'
-#
-#     def file_validate(self, new_data: list | dict) -> None:
-#         """
-#         Валидация файла и его обработка перед записью в JSON-файл
-#         Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
-#
-#         """
-#         print(f'3.1 Отработал метод file_validate')
-#         print(f'3.1. (Имя файла {self.filename})')
-#         print('----------------------')
-#
-#         with open(self.path_to_file, 'r+', encoding="UTF-8") as file:
-#             empty_file = json.load(file)
-#
-#             print(f'3.2. Отработал метод file_validate')
-#             print(f'3.2. (Имя файла {self.filename})')
-#             print('----------------------')
-#             # Исключение дублей вакансий
-#             formatted_file = list({d["url"]: d for d in empty_file}.values())
-#
-#             formatted_file.extend(new_data)
-#
-#             print(f'3.3. Отработал метод file_validate')
-#             print(f'3.3. (Имя файла {self.filename})')
-#             print('----------------------')
-#
-#             with open(self.path_to_file, 'w+', encoding="UTF-8") as file_:
-#                 json.dump(formatted_file, file_, indent=4, ensure_ascii=False)
-#             print(f'3.4. Отработал метод file_validate')
-#             print(f'3.4. (Имя файла {self.filename})')
-#             print('----------------------')
-#
-#     def creating_dictionary_vacancy(self, data: list) -> None:
-#         """
-#         Создание словаря из полученных параметров вакансии
-#
-#         """
-#         print(f'4.1 creating_dictionary_vacancy')
-#         print(f'4.1. (Имя файла {self.filename})')
-#         print('----------------------')
-#
-#         new_list_dict = list()
-#         for vacancy in data:
-#             if isinstance(vacancy, Vacancy):
-#                 formation_dict = dict()
-#                 formation_dict['name'] = vacancy.name
-#                 formation_dict['url'] = vacancy.url
-#                 formation_dict['salary'] = vacancy.salary
-#                 formation_dict['requirement'] = vacancy.requirement
-#                 formation_dict['responsibility'] = vacancy.responsibility
-#                 new_list_dict.append(formation_dict)
-#             else:
-#                 raise TypeError('Неверный тип атрибута/ов вакансии')
-#         self.file_validate(new_list_dict)
-#
-#     def save_data_in_file(self, *information_vacancies: list) -> None:
-#         """
-#         Сохраняем информацию о вакансиях в формате JSON
-#
-#         """
-#         print(f'5.1 save_data_in_file')
-#         print(f'5.1. (Имя файла {self.filename})')
-#         print('----------------------')
-#
-#         # Удаление лишнего списка верхнего уровня
-#         flattened_data = list(chain.from_iterable(information_vacancies))
-#         # print(self.creating_dictionary_vacancy(flattened_data))
-#         self.creating_dictionary_vacancy(flattened_data)
-#
-#     def add_vacancy(self):
-#         pass
-#
-#     def delete_vacancy(self):
-#         pass
-
-
-
-
-
-
-
-
-    # def file_validate(self, new_data: list | dict) -> None:
-    #     """
-    #     Валидация файла и его обработка перед записью в JSON-файл
-    #     Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
-    #
-    #     """
-    #     if isinstance(new_data, dict):
-    #         new_data = list(new_data)
-    #     if self.path_to_file:
-    #         try:
-    #             with open(self.path_to_file, "r", encoding="UTF-8") as old_file_path:
-    #                 old_file_data = json.load(old_file_path)
-    #                 # Объединение старых и новых вакансий
-    #                 if isinstance(new_data, list):
-    #                     new_data.extend(old_file_data)
-    #                 else:
-    #                     raise TypeError
-    #                 # Исключение дублей вакансий
-    #                 formatted_file = list({d["url"]: d for d in new_data}.values())
-    #         except json.JSONDecodeError as err:
-    #             print(f"Файл пуст(1) {err}")
-    #         except TypeError as err:
-    #             raise TypeError(f"Ошибка типа входных данных {err}")
-    #         else:
-    #             # Создание нового файла с добавленными новыми вакансиями
-    #             with open(self.path_to_file, "w", encoding="UTF-8") as old_file_path:
-    #                 json.dump(formatted_file, old_file_path, indent=4, ensure_ascii=False)
-    #     else:
-    #         with open(self.path_to_file, "w", encoding="UTF-8") as new_file_path:
-    #             json.dump(new_data, new_file_path, indent=4, ensure_ascii=False)
-
-
-
-
-
-        # print('yes')
-    # print(f'from: {salary_from}')
-    # print(f'to: {salary_to}')
-    # if salary_from and salary_to and salary_from < salary_to:
-    #     print('status: 0')
-    #     print(f'salary: {key_true_vacancies['salary']}')
-    #     if salary_from <= key_true_vacancies['salary'] <= salary_to:
-    #         print('status: 0.1')
-    #         filtered_data.append(key_true_vacancies)
-    #         print('status: 1')
-    # elif not salary_from and not salary_to:
-    #     filtered_data.append(key_true_vacancies)
-    #     print('status: 2')
-    # elif (salary_from and not salary_to and
-    #       key_true_vacancies["salary"] >= salary_from):
-    #     filtered_data.append(key_true_vacancies)
-    #     print('status: 3')
-    # elif (salary_to and not salary_from and
-    #       key_true_vacancies["salary"] <= salary_to):
-    #     filtered_data.append(key_true_vacancies)
-    #     print('status: 4')
-    # elif salary_from > salary_to:
-    #     raise ValueError("'salary_from' не может быть больше 'salary_to'")
+            with open(self.path_to_file, "w", encoding="UTF-8") as file:
+                json.dump(formatted_file_json, file, indent=4, ensure_ascii=False)
