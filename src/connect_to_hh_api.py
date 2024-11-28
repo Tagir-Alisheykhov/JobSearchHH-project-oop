@@ -11,7 +11,7 @@ from typing import Any
 from itertools import chain
 from abc import ABC, abstractmethod
 
-from src.utils import top_n_func
+from src.utils import top_n_func, from_and_to_parameters
 
 path_to_data = path.join(path.dirname(path.dirname(__file__)), 'data/')
 
@@ -77,6 +77,16 @@ class ValidateVacancy:
 
     """
     @classmethod
+    def salary_validate_input(cls, value: str) -> list[str]:
+        """
+        Валидация вводимых значений зарплаты
+        :return: диапазон зарплат
+        """
+        user_input = re.findall(r'(\d[0-9]+)', value)
+        if len(user_input) <= 2:
+            return user_input
+
+    @classmethod
     def salary_validate(cls, meaning_salary: list | tuple | str | int | float | dict) \
             -> str | int | float | dict:
         """
@@ -92,13 +102,15 @@ class ValidateVacancy:
                 return int(meaning_salary)
             elif isinstance(meaning_salary, str):
                 # 'str'
+                print(f'отладка-1: {meaning_salary}')
                 salary_value = (re.findall(r'\d+[-., ]\d+', meaning_salary) or
                                 re.findall(r'\d+', meaning_salary))
+                print(f'отладка-2: {salary_value}')
                 cleaned_salary = list()
                 for salary in salary_value:
                     clean_salary = re.sub(r'[^0-9]', "", salary)
                     cleaned_salary.append(int(clean_salary))
-                return max(cleaned_salary)
+                # return max(cleaned_salary)
             elif isinstance(meaning_salary, dict):
                 # 'dict' с ключами "from" и "to"
                 if not meaning_salary['from']:
@@ -243,7 +255,6 @@ class JSONSaver(FileSaver):
     Класс для добавления информации о вакансиях в JSON-файл.
 
     """
-    filtered_data = list()
 
     def __init__(self, filename='DefaultFilename'):
         """
@@ -300,9 +311,9 @@ class JSONSaver(FileSaver):
 
     def call_json_file_by_parameters(self,
                                      top_number: int = None,
-                                     keyword: str = " ",
-                                     salary_from: int = False,
-                                     salary_to: int = False
+                                     keyword: str = None,
+                                     salary_from: int = None,
+                                     salary_to: int = None
                                      ) -> str:
         """
         Получение данных из JSON-файла по указанным критериям.
@@ -314,43 +325,27 @@ class JSONSaver(FileSaver):
         Можно указать только один параметр или сразу оба.
 
         """
-        # Функция с параметром "Поисковой запрос"
-        # Функция с параметром "Топ-х вакансий"
-        # Функция фильтрация вакансий по ключевому слову
-        # Функция фильтрации по диапазону зарплат
-
+        filtered_data = list()
         with open(self.absolut_path_to_file, 'r', encoding="utf-8") as js_file:
-            data = json.load(js_file)  # Выводит транзакции по запросу (уже обработанные)
+            data = json.load(js_file)
             # Фильтрация данных с выводом зарплат в порядке убывания
-            data = top_n_func(top_number, data)
-
+            if top_number:
+                data = top_n_func(top_number, data)
             for vacancy in data:
                 key_true_vacancies = None
-                # print(vacancy)
                 # Фильтрация вакансий по ключевому слову
                 for value in vacancy.values():
-                    # print(value)
-                    if isinstance(value, str) and keyword in value:
-                        key_true_vacancies = vacancy
-
+                    if isinstance(value, str):
+                        if keyword:
+                            if keyword in str(value).lower():
+                                key_true_vacancies = vacancy
+                        else:
+                            key_true_vacancies = vacancy
                 # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
-                if key_true_vacancies:
-                    # print(json.dumps(key_true_vacancies, indent=4, ensure_ascii=False))
-                    if salary_from and salary_to and salary_from < salary_to:
-                        if salary_from <= key_true_vacancies['salary'] <= salary_to:
-                            self.filtered_data.append(vacancy)
-                    elif not salary_from and not salary_to:
-                        self.filtered_data.append(vacancy)
-                    elif (salary_from and not salary_to and
-                          key_true_vacancies["salary"] >= salary_from):
-                        self.filtered_data.append(vacancy)
-                    elif (salary_to and not salary_from and
-                          key_true_vacancies["salary"] <= salary_to):
-                        self.filtered_data.append(vacancy)
-                    elif salary_from > salary_to:
-                        raise ValueError("'salary_from' не может быть больше 'salary_to'")
-
-            return json.dumps(self.filtered_data, indent=4, ensure_ascii=False)
+                if key_true_vacancies is not None and isinstance(key_true_vacancies, dict):
+                    res = from_and_to_parameters(salary_from, salary_to, key_true_vacancies)
+                    filtered_data.append(res)
+            return json.dumps(filtered_data, indent=2, ensure_ascii=False)
 
     def add_vacancy(self, *vacancy: Vacancy) -> None:
         """
@@ -541,3 +536,31 @@ class JSONSaver(FileSaver):
     #     else:
     #         with open(self.path_to_file, "w", encoding="UTF-8") as new_file_path:
     #             json.dump(new_data, new_file_path, indent=4, ensure_ascii=False)
+
+
+
+
+
+        # print('yes')
+    # print(f'from: {salary_from}')
+    # print(f'to: {salary_to}')
+    # if salary_from and salary_to and salary_from < salary_to:
+    #     print('status: 0')
+    #     print(f'salary: {key_true_vacancies['salary']}')
+    #     if salary_from <= key_true_vacancies['salary'] <= salary_to:
+    #         print('status: 0.1')
+    #         filtered_data.append(key_true_vacancies)
+    #         print('status: 1')
+    # elif not salary_from and not salary_to:
+    #     filtered_data.append(key_true_vacancies)
+    #     print('status: 2')
+    # elif (salary_from and not salary_to and
+    #       key_true_vacancies["salary"] >= salary_from):
+    #     filtered_data.append(key_true_vacancies)
+    #     print('status: 3')
+    # elif (salary_to and not salary_from and
+    #       key_true_vacancies["salary"] <= salary_to):
+    #     filtered_data.append(key_true_vacancies)
+    #     print('status: 4')
+    # elif salary_from > salary_to:
+    #     raise ValueError("'salary_from' не может быть больше 'salary_to'")
