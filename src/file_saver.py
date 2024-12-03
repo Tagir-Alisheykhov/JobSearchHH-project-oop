@@ -2,6 +2,7 @@ import json
 from abc import ABC, abstractmethod
 from itertools import chain
 from os import path
+from typing import Any
 
 from src.vacancy import Vacancy
 from src.utils import from_and_to_parameters, top_n_func
@@ -49,7 +50,7 @@ class JSONSaver(FileSaver):
     def file_validate(self, new_data: list | dict) -> None:
         """
         Валидация файла и его обработка перед записью в JSON-файл
-        Данный метод обрабатывает как массив с вакансиями, так и словарь с одной вакансией
+        Данный метод обрабатывает массив с вакансиями
 
         """
         with open(self.absolut_path_to_file, "r+", encoding="UTF-8") as file:
@@ -59,7 +60,7 @@ class JSONSaver(FileSaver):
             with open(self.absolut_path_to_file, "w+", encoding="UTF-8") as file_:
                 json.dump(formatted_file, file_, indent=4, ensure_ascii=False)
 
-    def creating_dictionary_vacancy(self, data: list) -> None:
+    def creating_dictionary_vacancy(self, data: list) -> Any:
         """
         Создание словаря из полученных параметров вакансии
 

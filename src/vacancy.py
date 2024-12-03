@@ -78,7 +78,7 @@ class ValidateVacancy:
             return meaning_salary
 
 
-class CastToListObjects:
+class CastToListObjects(ValidateVacancy):
     """
     Класс для создания списка объектов вакансий
 
@@ -92,7 +92,7 @@ class CastToListObjects:
         """
         vacancies_list = list()
         for vacancy in json.loads(vacancies):
-            vacancy["salary"] = ValidateVacancy.validate_for_empty_value_salary(
+            vacancy["salary"] = super().validate_for_empty_value_salary(
                 vacancy["salary"]
             )
             # Создание списка
@@ -108,7 +108,7 @@ class CastToListObjects:
         return vacancies_list
 
 
-class Vacancy:
+class Vacancy(CastToListObjects, ValidateVacancy):
     """
     Класс для работы с вакансиями.
 
@@ -129,7 +129,7 @@ class Vacancy:
         """
         self.name = name
         self.url = url
-        self.salary = ValidateVacancy.salary_validate(salary)
+        self.salary = super().salary_validate(salary)
         self.requirement = requirement
         self.responsibility = responsibility
 
@@ -163,5 +163,5 @@ class Vacancy:
         Создание списка из объектов вакансий
 
         """
-        list_of_objs = CastToListObjects.to_list(vacancies)
+        list_of_objs = super().to_list(vacancies)
         return list_of_objs
