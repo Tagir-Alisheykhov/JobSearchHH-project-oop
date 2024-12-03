@@ -9,8 +9,8 @@ from abc import ABC, abstractmethod
 from itertools import chain
 from os import path
 
-from src.vacancy import Vacancy
 from src.utils import from_and_to_parameters, top_n_func
+from src.vacancy import Vacancy
 
 path_to_data = path.join(path.dirname(path.dirname(__file__)), "data/")
 
@@ -49,10 +49,8 @@ class JSONSaver(FileSaver):
         self.path_to_file = path_to_data + self.filename + ".json"
 
     @classmethod
-    def __validate_objects_vacancy(cls, data: list | dict):
-        """
-
-        """
+    def __validate_objects_vacancy(cls, data):
+        """ """
         new_list_dict = list()
         for vacancy in data:
             if not isinstance(vacancy, Vacancy):
@@ -74,7 +72,7 @@ class JSONSaver(FileSaver):
 
         """
         validate = self.__validate_objects_vacancy(data)
-        with open(self.path_to_file, 'w+', encoding="UTF-8") as file:
+        with open(self.path_to_file, "w+", encoding="UTF-8") as file:
             json.dump(validate, file, indent=4, ensure_ascii=False)
 
     def save_data_in_file(self, *information_vacancies: list):
@@ -87,11 +85,11 @@ class JSONSaver(FileSaver):
         return self.creating_dictionary_vacancy(flattened_data)
 
     def call_json_file_by_parameters(
-            self,
-            top_number: int = None,
-            keyword: str = None,
-            salary_from: int = None,
-            salary_to: int = None,
+        self,
+        top_number=None,
+        keyword=None,
+        salary_from=None,
+        salary_to=None,
     ) -> str:
         """
         Получение данных из JSON-файла по указанным критериям.
@@ -104,9 +102,11 @@ class JSONSaver(FileSaver):
 
         """
         filtered_data = list()
-        if (self.path_to_file
-                and path.exists(self.path_to_file)
-                and isinstance(self.path_to_file, type("JSON"))):
+        if (
+            self.path_to_file
+            and path.exists(self.path_to_file)
+            and isinstance(self.path_to_file, type("JSON"))
+        ):
             with open(self.path_to_file, "r+", encoding="utf-8") as js_file:
                 data = json.load(js_file)
                 # Фильтрация данных с выводом зарплат в порядке убывания
@@ -124,7 +124,7 @@ class JSONSaver(FileSaver):
                                 key_true_vacancies = vacancy
                     # Фильтрация вакансий по указанным параметрам зарплаты (от и до)
                     if key_true_vacancies is not None and isinstance(
-                            key_true_vacancies, dict
+                        key_true_vacancies, dict
                     ):
                         res = from_and_to_parameters(
                             salary_from, salary_to, key_true_vacancies
@@ -141,18 +141,22 @@ class JSONSaver(FileSaver):
 
         """
         vacancy = self.__validate_objects_vacancy(list(vacancy))
-        if (self.path_to_file
-                and path.exists(self.path_to_file)
-                and isinstance(self.path_to_file, type("JSON"))):
-            with open(self.path_to_file, 'r+', encoding="UTF-8") as file:
+        if (
+            self.path_to_file
+            and path.exists(self.path_to_file)
+            and isinstance(self.path_to_file, type("JSON"))
+        ):
+            with open(self.path_to_file, "r+", encoding="UTF-8") as file:
                 vacancies = json.load(file)
                 for value in vacancy:
                     vacancies.append(value)
                     vacancies_unique = list({d["url"]: d for d in vacancies}.values())
-                with open(self.path_to_file, 'w+', encoding="UTF-8") as refresh_file:
-                    json.dump(vacancies_unique, refresh_file, indent=4, ensure_ascii=False)
+                with open(self.path_to_file, "w+", encoding="UTF-8") as refresh_file:
+                    json.dump(
+                        vacancies_unique, refresh_file, indent=4, ensure_ascii=False
+                    )
         else:
-            with open(self.path_to_file, 'w+', encoding="UTF-8") as refresh_file:
+            with open(self.path_to_file, "w+", encoding="UTF-8") as refresh_file:
                 json.dump(vacancy, refresh_file, indent=4, ensure_ascii=False)
 
     def delete_vacancy(self, *del_vacancy: Vacancy) -> None:
@@ -177,9 +181,9 @@ class JSONSaver(FileSaver):
                 del_vacancy_salary = param.salary
             for vacancy in data:
                 if (
-                        vacancy.get("name") == del_vacancy_name
-                        and vacancy.get("url") == del_vacancy_url
-                        and vacancy.get("salary") == del_vacancy_salary
+                    vacancy.get("name") == del_vacancy_name
+                    and vacancy.get("url") == del_vacancy_url
+                    and vacancy.get("salary") == del_vacancy_salary
                 ):
                     del vacancy
                 else:

@@ -2,6 +2,7 @@
 Модуль для взаимодействия с вакансиями
 
 """
+
 import json
 import re
 from typing import Any
@@ -24,7 +25,7 @@ class ValidateVacancy:
             return user_input
 
     @classmethod
-    def salary_validate(cls, meaning_salary: Any) -> Any:
+    def salary_validate(cls, meaning_salary):
         """
         Валидация значений ключа с зарплатой ('salary') с разными типами данных
 
@@ -60,7 +61,7 @@ class ValidateVacancy:
             return meaning_salary
 
     @classmethod
-    def validate_for_empty_value_salary(cls, meaning_salary: dict | None) -> dict | int:
+    def validate_for_empty_value_salary(cls, meaning_salary) -> dict | int:
         """
         Валидация json-файла с вакансиями, на пустые значения ключей
 

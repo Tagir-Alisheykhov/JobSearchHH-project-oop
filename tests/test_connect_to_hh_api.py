@@ -82,7 +82,7 @@ def test_validate_for_empty_value_salary(list_with_values: dict) -> None:
     )
 
 
-def test_class_vacancy(one_salary_1: dict, one_salary_2: dict) -> None:
+def test_class_vacancy(one_salary_1, one_salary_2) -> None:
     """
     Тестирование магических методов, предназначенных для сравнения
     объектов вакансий класса `Vacancy`.

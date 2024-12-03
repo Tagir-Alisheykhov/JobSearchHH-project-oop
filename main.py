@@ -4,10 +4,8 @@
 """
 
 from src.connect_to_hh_api import HeadHunterAPI
-
-from src.vacancy import ValidateVacancy, Vacancy
-
 from src.file_saver import JSONSaver
+from src.vacancy import Vacancy, ValidateVacancy
 
 
 def api_connect(user_query: str) -> list:
@@ -65,29 +63,7 @@ def user_interaction() -> str:
         top_number=top_n, keyword=filter_words_, salary_from=from_, salary_to=to_
     )
 
-# _____________________________
-
-
-def add_and_delete():
-    """
-    """
-    # ВАКАНСИЯ
-    vacancy = Vacancy('TESTER', 'https//test.url//.com', 777, 'It is test vacancy')
-
-    res = JSONSaver()
-    res.add_vacancy(vacancy)
-    res.delete_vacancy(vacancy)
-
-
-# _____________________________
-
-
-# ИТОГ. Видно, что файл перезаписывается. Нужно написать функционал так,
-# что при открытии файла и добавлении в него новой вакансии, проводилась
-# переборка на уникальность (вместо этого видимо я просто перезаписывал)
-
 
 if __name__ == "__main__":
     result = user_interaction()
     print(result)
-    # print(add_and_delete())
