@@ -3,8 +3,11 @@
 
 """
 
-from src.connect_to_hh_api import (HeadHunterAPI, JSONSaver, Vacancy,
-                                   ValidateVacancy)
+from src.connect_to_hh_api import HeadHunterAPI
+
+from src.vacancy import ValidateVacancy, Vacancy
+
+from src.file_saver import JSONSaver
 
 
 def api_connect(user_query: str) -> list:
