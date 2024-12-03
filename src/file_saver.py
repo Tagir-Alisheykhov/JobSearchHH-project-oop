@@ -1,3 +1,9 @@
+"""
+Модуль для создания файла с актуальными вакансиями.
+Также в данном модуле возможно добавить вакансии, удалить
+
+"""
+
 import json
 from abc import ABC, abstractmethod
 from itertools import chain
@@ -62,7 +68,7 @@ class JSONSaver(FileSaver):
         new_list_dict_unique = list({d["url"]: d for d in new_list_dict}.values())
         return new_list_dict_unique
 
-    def __creating_dictionary_vacancy(self, data: list):
+    def creating_dictionary_vacancy(self, data: list):
         """
         Создание словаря из полученных параметров вакансии
 
@@ -78,7 +84,7 @@ class JSONSaver(FileSaver):
         """
         # Удаление лишнего списка верхнего уровня
         flattened_data = list(chain.from_iterable(information_vacancies))
-        return self.__creating_dictionary_vacancy(flattened_data)
+        return self.creating_dictionary_vacancy(flattened_data)
 
     def call_json_file_by_parameters(
             self,

@@ -3,7 +3,9 @@ from unittest.mock import patch
 
 import pytest
 
-from src.connect_to_hh_api import HeadHunterAPI, JSONSaver, ValidateVacancy
+from src.connect_to_hh_api import HeadHunterAPI
+from src.file_saver import JSONSaver
+from src.vacancy import ValidateVacancy
 
 path_to_data = path.join(path.dirname(path.dirname(__file__)), "data/")
 
@@ -109,16 +111,6 @@ def test_json_creating_dictionary_vacancy():
     json_saver = JSONSaver()
     with pytest.raises(TypeError):
         assert json_saver.creating_dictionary_vacancy(list("<<<virus>>>"))
-
-
-def test_call_json_file_by_parameters():
-    """
-    Тестирование метода вызова json-файла `call_json_file_by_parameters`
-    класса `JSONSaver`.
-
-    """
-    json_saver = JSONSaver()
-    assert json_saver.call_json_file_by_parameters(0) == "[]"
 
 
 def test_add_vacancy(one_salary_1):

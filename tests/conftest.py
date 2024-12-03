@@ -1,6 +1,6 @@
 import pytest
 
-from src.connect_to_hh_api import Vacancy
+from src.vacancy import Vacancy
 
 
 @pytest.fixture
